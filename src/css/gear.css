@@ -1,0 +1,173 @@
+/* Стили для модального окна */
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Прозрачный черный цвет для затемнения */
+    z-index: 9999;
+    /* Выше других элементов */
+}
+
+.modal-content {
+    background-color: var(--background-color-first-block);
+    padding: 20px;
+    min-width: 400px;
+    min-height: 150px;
+    /* height: 100%; */
+    border-radius: 30px;
+    position: relative;
+    /* Добавлено */
+}
+
+/* Стили для кнопки закрытия модального окна */
+.close {
+    color: var(--link-color);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 30px;
+}
+
+
+
+.settings-name-heading {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.line {
+    border-bottom: 1px solid var(--decoration-color);
+    margin-bottom: 25px;
+}
+
+.settings-name-subtitle,
+.modal-title {
+    font-size: 16px;
+
+}
+
+.modal-title {
+    margin-bottom: 10px;
+}
+
+.settings-languageChange,
+.settings-themeChange {
+    margin-bottom: 30px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-languageChange div {
+    width: 100%;
+}
+
+.languageChange-wrapper,
+.metric-wrapper,
+.themeChange-wrapper {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 10px;
+
+}
+
+.bi-cursor-fill,
+.bi-translate,
+.bi-cloudy-fill,
+.bi-mask {
+    fill: var(--icon-color);
+
+    margin-right: 10px;
+}
+
+.bi-cursor-fill {
+    width: 15px;
+}
+
+.bi-translate,
+.bi-cloudy-fill,
+.bi-mask {
+    width: 30px;
+}
+
+.metric-name,
+.language-title,
+.theme-title {
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.metric-settings,
+.language-settings,
+.theme-settings {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+input[type="radio"] {
+    width: 15px;
+    height: 15px;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    border: 2px solid var(--decoration-color);
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Стили при выборе радиобаттона */
+input[type="radio"]:checked {
+    background-color: var(--decoration-color);
+    /* Фон при выборе */
+}
+
+.modal-item-wraper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.metric-item {
+    margin-bottom: 20px;
+}
+
+.metric-unit,
+.language-item,
+.theme-item {
+    margin-left: 30px;
+    font-weight: 300;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        min-width: 300px;
+    }
+
+    .settings-name-subtitle,
+    .modal-title {
+        font-size: 20px;
+
+    }
+
+    .metric-settings,
+    .language-settings {
+        margin-bottom: 15px;
+    }
+
+    .metric-name,
+    .language-title {
+        font-size: 16px;
+    }
+}

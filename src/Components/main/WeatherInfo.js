@@ -11,6 +11,7 @@ function WeatherInfo({ refresh }) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedCity, setSelectedCity] = useState(null);
 
   const handleCityLoaded = (loaded) => {
     if (!loaded) {
@@ -25,28 +26,40 @@ function WeatherInfo({ refresh }) {
     setHasError(false);
     setErrorMessage("");
 
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // Здесь вы можете использовать широту и долготу для получения данных о погоде
-          console.log("Местоположение:", position.coords);
-          setIsLoading(false);
-        },
-        (error) => {
-          // Обработка ошибок геолокации
-          setHasError(true);
-          setErrorMessage(
-            error.code === 1
-              ? "Доступ к местоположению отключён. Разрешите доступ в настройках браузера."
-              : "Не удалось определить местоположение. Проверьте настройки."
-          );
-          setIsLoading(false);
-        }
-      );
+    // Проверяем, есть ли выбранный город в локальном хранилище
+    const selectedCityFromLocalStorage = JSON.parse(
+      localStorage.getItem("selectedCities")
+    );
+
+    if (selectedCityFromLocalStorage) {
+      console.log(selectedCityFromLocalStorage);
+      setSelectedCity(selectedCityFromLocalStorage);
+      setIsLoading(false); // Если есть выбранный город, показываем погоду сразу
     } else {
-      setHasError(true);
-      setErrorMessage("Ваш браузер не поддерживает геолокацию.");
-      setIsLoading(false);
+      // Если город не выбран, пробуем получить геолокацию
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Здесь вы можете использовать широту и долготу для получения данных о погоде
+            console.log("Местоположение:", position.coords);
+            setIsLoading(false);
+          },
+          (error) => {
+            // Обработка ошибок геолокации
+            setHasError(true);
+            setErrorMessage(
+              error.code === 1
+                ? "Доступ к местоположению отключён. Разрешите доступ в настройках браузера."
+                : "Не удалось определить местоположение. Проверьте настройки."
+            );
+            setIsLoading(false);
+          }
+        );
+      } else {
+        setHasError(true);
+        setErrorMessage("Ваш браузер не поддерживает геолокацию.");
+        setIsLoading(false);
+      }
     }
   }, [refresh]);
 

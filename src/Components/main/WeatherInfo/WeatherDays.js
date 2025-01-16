@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import Swiper from "swiper";
 import "swiper/swiper-bundle.css";
-import { getNext7DaysForecast } from '../../../proxy/weatherProxy';
-
+import { getNext7DaysForecast } from "../../../proxy/weatherProxy";
 
 function WeatherDays() {
   const allNext7DaysForecast = getNext7DaysForecast();
   const [next7DaysForecast, setNext7DaysForecast] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlideIndex, setSelectedSlideIndex] = useState(null);
-  const [selectedButton, setSelectedButton] = useState(7); 
+  const [selectedButton, setSelectedButton] = useState(7);
 
   const swiperRef = useRef(null);
 
@@ -31,12 +30,12 @@ function WeatherDays() {
           980: { slidesPerView: 5 },
           1024: { slidesPerView: 7 },
         },
-        allowTouchMove: true, 
+        allowTouchMove: true,
         on: {
           reachEnd: function () {
             this.allowSlideNext = false;
-          }
-        }
+          },
+        },
       });
 
       const hourSwiper = new Swiper(".swiper-container-hour-fordays", {
@@ -102,8 +101,8 @@ function WeatherDays() {
     if (allNext7DaysForecast) {
       setNext7DaysForecast(allNext7DaysForecast.slice(0, numDays));
       setSelectedDate(null);
-      setSelectedSlideIndex(null); 
-      setSelectedButton(numDays); 
+      setSelectedSlideIndex(null);
+      setSelectedButton(numDays);
       handleSlideClick(allNext7DaysForecast[0], 0);
     }
   };
@@ -112,21 +111,41 @@ function WeatherDays() {
     changeDisplayedDays(7);
   }, []);
 
-  const settings = JSON.parse(localStorage.getItem('settings')) || {};
+  const settings = JSON.parse(localStorage.getItem("settings")) || {};
   const temperatureUnit = settings.temperatureUnit;
   const pressureUnit = settings.pressureUnit;
   const speedUnit = settings.speedUnit;
 
   return (
     <>
-      
       {getNext7DaysForecast() && (
         <>
           <div className="display-buttons">
-        <button className={`buttons ${selectedButton === 7 ? 'selected-buttons' : ''}`} onClick={() => changeDisplayedDays(7)}>7 дней</button>
-        <button className={`buttons ${selectedButton === 10 ? 'selected-buttons' : ''}`} onClick={() => changeDisplayedDays(10)}>10 дней</button>
-        <button className={`buttons ${selectedButton === 14 ? 'selected-buttons' : ''}`} onClick={() => changeDisplayedDays(14)}>14 дней</button>
-      </div>
+            <button
+              className={`buttons ${
+                selectedButton === 7 ? "selected-buttons" : ""
+              }`}
+              onClick={() => changeDisplayedDays(7)}
+            >
+              7 дней
+            </button>
+            <button
+              className={`buttons ${
+                selectedButton === 10 ? "selected-buttons" : ""
+              }`}
+              onClick={() => changeDisplayedDays(10)}
+            >
+              10 дней
+            </button>
+            <button
+              className={`buttons ${
+                selectedButton === 14 ? "selected-buttons" : ""
+              }`}
+              onClick={() => changeDisplayedDays(14)}
+            >
+              14 дней
+            </button>
+          </div>
           <div className="day-weather__wrapper">
             <div className="swiper-container swiper-container-day">
               <div className="swiper-wrapper">
@@ -134,30 +153,43 @@ function WeatherDays() {
                   next7DaysForecast.map((day, index) => (
                     <div
                       key={index}
-                     className={`day-weather-info swiper-slide day-slide ${selectedSlideIndex === index ? 'selected' : ''}`}
+                      className={`day-weather-info swiper-slide day-slide ${
+                        selectedSlideIndex === index ? "selected" : ""
+                      }`}
                       onClick={() => handleSlideClick(day, index)}
-                      style={{ borderBottom: selectedSlideIndex === index ? 'none' : '1px solid var(--decoration-color)' }}
+                      style={{
+                        borderBottom:
+                          selectedSlideIndex === index
+                            ? "none"
+                            : "1px solid var(--decoration-color)",
+                      }}
                     >
                       <div className="day">{day.dayOfWeek}</div>
                       <div className="date">{day.dateInWords}</div>
                       <div className="image-block">
                         <img
-                         className="weather-icon icon-day"
+                          className="weather-icon icon-day"
                           src={require(`../../../img/icon/${day.icon}.svg`)}
                           alt=""
                         />
                       </div>
                       <div className="temperatures">
-                        <span>{day.minTemp}{temperatureUnit}</span>
+                        <span>
+                          {day.minTemp}
+                          {temperatureUnit}
+                        </span>
                         <span>...</span>
-                        <span>{day.maxTemp}{temperatureUnit}</span>
+                        <span>
+                          {day.maxTemp}
+                          {temperatureUnit}
+                        </span>
                       </div>
                     </div>
                   ))}
               </div>
             </div>
           </div>
-        <div className="info-day">
+          <div className="info-day">
             {selectedDate && (
               <>
                 <div className="date-blocday">{selectedDate}</div>
@@ -165,9 +197,11 @@ function WeatherDays() {
                   <div className="column column-metric__wrapper">
                     <div className="column-empty"></div>
                     <div className="column-metric">
-                      <div className="metric-title">Температура, {temperatureUnit}</div>
+                      <div className="metric-title">
+                        Температура, {temperatureUnit}
+                      </div>
                       <svg
-                       className="metric-icon bi bi-thermometer-half"
+                        className="metric-icon bi bi-thermometer-half"
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
                         height="16"
@@ -179,9 +213,11 @@ function WeatherDays() {
                       </svg>
                     </div>
                     <div className="column-metric">
-                      <div className="metric-title">Ощущается, {temperatureUnit}</div>
+                      <div className="metric-title">
+                        Ощущается, {temperatureUnit}
+                      </div>
                       <svg
-                       className="metric-icon bi bi-thermometer-half"
+                        className="metric-icon bi bi-thermometer-half"
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
                         height="16"
@@ -193,9 +229,11 @@ function WeatherDays() {
                       </svg>
                     </div>
                     <div className="column-metric">
-                      <div className="metric-title">Давление, {pressureUnit}</div>
+                      <div className="metric-title">
+                        Давление, {pressureUnit}
+                      </div>
                       <svg
-                       className="metric-icon bi bi-water"
+                        className="metric-icon bi bi-water"
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
                         height="16"
@@ -208,7 +246,7 @@ function WeatherDays() {
                     <div className="column-metric">
                       <div className="metric-title">Влага, %</div>
                       <svg
-                       className="metric-icon bi bi-moisture"
+                        className="metric-icon bi bi-moisture"
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
                         height="16"
@@ -221,7 +259,7 @@ function WeatherDays() {
                     <div className="column-metric">
                       <div className="metric-title">Ветер, {speedUnit}</div>
                       <svg
-                       className="metric-icon bi bi-wind"
+                        className="metric-icon bi bi-wind"
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
                         height="16"
@@ -234,7 +272,7 @@ function WeatherDays() {
                     <div className="column-metric">
                       <div className="metric-title">Осадки, %</div>
                       <svg
-                       className="metric-icon bi bi-droplet-fill"
+                        className="metric-icon bi bi-droplet-fill"
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
                         height="16"
@@ -248,31 +286,47 @@ function WeatherDays() {
                   <div className="swiper-container-wrapper">
                     <div className="swiper-container swiper-container-hour-fordays">
                       <div className="swiper-wrapper">
-                        {selectedSlideIndex !== null && next7DaysForecast[selectedSlideIndex].hourlyWeather.map((hourData, index) => (
-                          <div
-                            key={index}
-                           className="swiper-slide swiper-slide-hour column"
-                          >
-                            <div className="time">{hourData.time}</div>
-                            <div className="time-weather-img">
-                              <img className="weather-icon-hour" src={require(`../../../img/icon/${hourData.icon}.svg`)} alt="" />
+                        {selectedSlideIndex !== null &&
+                          next7DaysForecast[
+                            selectedSlideIndex
+                          ].hourlyWeather.map((hourData, index) => (
+                            <div
+                              key={index}
+                              className="swiper-slide swiper-slide-hour column"
+                            >
+                              <div className="time">{hourData.time}</div>
+                              <div className="time-weather-img">
+                                <img
+                                  className="weather-icon-hour"
+                                  src={require(`../../../img/icon/${hourData.icon}.svg`)}
+                                  alt=""
+                                />
+                              </div>
+                              <div className="metric-text">{hourData.temp}</div>
+                              <div className="metric-text">
+                                {hourData.feelslike}
+                              </div>
+                              <div className="metric-text">
+                                {hourData.pressure}
+                              </div>
+                              <div className="metric-text">
+                                {hourData.humidity}
+                              </div>
+                              <div className="metric-text">
+                                {hourData.windspeed}
+                              </div>
+                              <div className="metric-text">
+                                {hourData.precipprob}
+                              </div>
                             </div>
-                            <div className="metric-text">{hourData.temp}</div>
-                            <div className="metric-text">{hourData.feelslike}</div>
-                            <div className="metric-text">{hourData.pressure}</div>
-                            <div className="metric-text">{hourData.humidity}</div>
-                            <div className="metric-text">{hourData.windspeed}</div>
-                            <div className="metric-text">{hourData.precipprob}</div>
-                          </div>
-                        ))}
+                          ))}
                       </div>
                     </div>
                   </div>
                 </div>
               </>
-          )}
-        </div>
-
+            )}
+          </div>
         </>
       )}
     </>

@@ -9,12 +9,7 @@ import SelectedLocations from "./Components/main/SelectedLocations";
 import { useTheme } from "./hooks/use-theme";
 import getCoordinatesByCity from "./Components/main/WeatherApi/getCoordinatesByCity";
 import GearInfo from "./Components/GearInfo";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function App() {
   const { theme, handleThemeChange } = useTheme();
@@ -55,6 +50,33 @@ function App() {
   const togglePanel = () => {
     setIsPanelOpen(!isPanelOpen);
   };
+
+  useEffect(() => {
+    const defaultSettings = {
+      temperatureUnit: "°F",
+      lengthUnit: "мили",
+      pressureUnit: "мб",
+      speedUnit: "миль/ч",
+      language: "ru",
+      theme: "light",
+    };
+
+    try {
+      const storedSettings = localStorage.getItem("settings");
+
+      if (!storedSettings) {
+        localStorage.setItem("settings", JSON.stringify(defaultSettings));
+        console.log("Ключ 'settings' успешно создан:", defaultSettings);
+      } else {
+        console.log(
+          "Ключ 'settings' уже существует:",
+          JSON.parse(storedSettings)
+        );
+      }
+    } catch (error) {
+      console.error("Ошибка работы с localStorage:", error);
+    }
+  }, []);
 
   return (
     <Router>
@@ -131,7 +153,7 @@ function App() {
                   <path
                     fillRule="evenodd"
                     d="M2 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"
-                    />
+                  />
                 </svg>
               </button>
               <div className="panel-content">
@@ -145,10 +167,7 @@ function App() {
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      onClick={togglePanel}
-                      to="/jweather/settings"
-                    >
+                    <Link onClick={togglePanel} to="/jweather/settings">
                       <Gear />
                     </Link>
                   </li>

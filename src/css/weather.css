@@ -395,7 +395,6 @@
   }
 }
 
-
 .loader-wrapper {
   position: absolute;
   top: 50%;
@@ -556,7 +555,7 @@
   }
 
   .column-info__inner {
-      padding: 12px;
+    padding: 12px;
   }
 
   .main-content {
@@ -598,17 +597,16 @@
 }
 
 .error-message {
-    position: absolute;
-    top: 55%;
-    left: 50%;
+  position: absolute;
+  top: 55%;
+  left: 40%;
 }
 
 @media (max-width: 1200px) {
-    .error-message {
-        left: 40%;
-    }
+  .error-message {
+    left: 25%;
+  }
 }
-
 
 @media (max-width: 768px) {
   .buttons {
@@ -676,19 +674,6 @@
   }
 
   .error-message {
-    left: 35%;
+    left: 5%;
   }
 }
-
-@media (max-width: 768px) {
-    .error-message {
-        left: 30%;
-    }
-}
-
-@media (max-width: 500px) {
-    .error-message {
-        left: 15%;
-    }
-}
-

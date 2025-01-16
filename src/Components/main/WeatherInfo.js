@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import CityInfo from "./WeatherInfo/CityInfo";
 import Description from "./WeatherInfo/Description";
 import DetailedWeather from "./WeatherInfo/DetailedWeather";
 import WeatherHour from "./WeatherInfo/WeatherHour";
 import WeatherDays from "./WeatherInfo/WeatherDays";
 
-import '../../css/weather.css';
+import "../../css/weather.css";
 
 function WeatherInfo({ refresh }) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleCityLoaded = (loaded) => {
     if (!loaded) {
       setHasError(true);
+      setErrorMessage("Не удалось загрузить данные о городе.");
     }
     setIsLoading(false);
   };
@@ -21,9 +23,31 @@ function WeatherInfo({ refresh }) {
   useEffect(() => {
     setIsLoading(true);
     setHasError(false);
-    setTimeout(() => {
+    setErrorMessage("");
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Здесь вы можете использовать широту и долготу для получения данных о погоде
+          console.log("Местоположение:", position.coords);
+          setIsLoading(false);
+        },
+        (error) => {
+          // Обработка ошибок геолокации
+          setHasError(true);
+          setErrorMessage(
+            error.code === 1
+              ? "Доступ к местоположению отключён. Разрешите доступ в настройках браузера."
+              : "Не удалось определить местоположение. Проверьте настройки."
+          );
+          setIsLoading(false);
+        }
+      );
+    } else {
+      setHasError(true);
+      setErrorMessage("Ваш браузер не поддерживает геолокацию.");
       setIsLoading(false);
-    }, 2000);
+    }
   }, [refresh]);
 
   if (isLoading) {
@@ -35,11 +59,7 @@ function WeatherInfo({ refresh }) {
   }
 
   if (hasError) {
-    return (
-      <div className="error-message">
-        Нет доступных данных о погоде
-      </div>
-    );
+    return <div className="error-message">{errorMessage}</div>;
   }
 
   return (

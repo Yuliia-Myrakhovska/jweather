@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/gear.css";
 
-import { useTheme } from "../hooks/use-theme"; 
+import { useTheme } from "../hooks/use-theme";
 
 function GearInfo() {
   const [selectedMetric, setSelectedMetric] = useState(null);
@@ -13,7 +13,7 @@ function GearInfo() {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState("");
 
-  const { theme, handleThemeChange: toggleTheme } = useTheme(); 
+  const { theme, handleThemeChange: toggleTheme } = useTheme();
 
   const openModal = (metric) => {
     setSelectedMetric(metric);
@@ -58,6 +58,7 @@ function GearInfo() {
         })
       );
     }
+    console.log(storedSettings);
   }, []);
 
   const handleUnitChange = (metric, unit) => {
@@ -89,7 +90,7 @@ function GearInfo() {
   };
 
   const handleThemeChange = (theme) => {
-    setSelectedTheme(theme); 
+    setSelectedTheme(theme);
     localStorage.setItem(
       "settings",
       JSON.stringify({
@@ -148,9 +149,7 @@ function GearInfo() {
           <div className="theme-title">Выберите тему</div>
         </div>
         <span className="theme-item">
-          {selectedTheme === "light"
-            ? "Светлая"
-            : "Темная"}
+          {selectedTheme === "light" ? "Светлая" : "Темная"}
         </span>
       </div>
       {isThemeModalOpen && (
@@ -282,9 +281,7 @@ function GearInfo() {
                 checked={temperatureUnit === "°C"}
                 onChange={() => handleUnitChange("temperature", "°C")}
               />
-              <label htmlFor="°C">
-                °C
-              </label>
+              <label htmlFor="°C">°C</label>
             </div>
             <div className="modal-item-wraper">
               <input
@@ -295,9 +292,7 @@ function GearInfo() {
                 checked={temperatureUnit === "°F"}
                 onChange={() => handleUnitChange("temperature", "°F")}
               />
-              <label htmlFor="°F">
-                °F
-              </label>
+              <label htmlFor="°F">°F</label>
             </div>
           </div>
         </div>
@@ -318,9 +313,7 @@ function GearInfo() {
                 checked={lengthUnit === "м"}
                 onChange={() => handleUnitChange("length", "м")}
               />
-              <label htmlFor="Meters">
-                м
-              </label>
+              <label htmlFor="Meters">м</label>
             </div>
             <div className="modal-item-wraper">
               <input
@@ -331,9 +324,7 @@ function GearInfo() {
                 checked={lengthUnit === "км"}
                 onChange={() => handleUnitChange("length", "км")}
               />
-              <label htmlFor="Kilometers">
-               км
-              </label>
+              <label htmlFor="Kilometers">км</label>
             </div>
             <div className="modal-item-wraper">
               <input
@@ -344,9 +335,7 @@ function GearInfo() {
                 checked={lengthUnit === "мили"}
                 onChange={() => handleUnitChange("length", "мили")}
               />
-              <label htmlFor="Miles">
-                мили
-              </label>
+              <label htmlFor="Miles">мили</label>
             </div>
           </div>
         </div>
@@ -365,13 +354,9 @@ function GearInfo() {
                 name="pressure"
                 value="мм"
                 checked={pressureUnit === "мм"}
-                onChange={() =>
-                  handleUnitChange("pressure", "мм")
-                }
+                onChange={() => handleUnitChange("pressure", "мм")}
               />
-              <label htmlFor="Millimeters_Mercury">
-                мм
-              </label>
+              <label htmlFor="Millimeters_Mercury">мм</label>
             </div>
             <div className="modal-item-wraper">
               <input
@@ -382,9 +367,7 @@ function GearInfo() {
                 checked={pressureUnit === "мб"}
                 onChange={() => handleUnitChange("pressure", "мб")}
               />
-              <label htmlFor="Millibars">
-                мб
-              </label>
+              <label htmlFor="Millibars">мб</label>
             </div>
           </div>
         </div>
@@ -405,9 +388,7 @@ function GearInfo() {
                 checked={speedUnit === "м/с"}
                 onChange={() => handleUnitChange("speed", "м/с")}
               />
-              <label htmlFor="Meters_Second">
-                м/с
-              </label>
+              <label htmlFor="Meters_Second">м/с</label>
             </div>
             <div className="modal-item-wraper">
               <input
@@ -416,13 +397,9 @@ function GearInfo() {
                 name="speed"
                 value="км/ч"
                 checked={speedUnit === "км/ч"}
-                onChange={() =>
-                  handleUnitChange("speed", "км/ч")
-                }
+                onChange={() => handleUnitChange("speed", "км/ч")}
               />
-              <label htmlFor="Kilometers_Hour">
-                км/ч
-              </label>
+              <label htmlFor="Kilometers_Hour">км/ч</label>
             </div>
             <div className="modal-item-wraper">
               <input
@@ -433,9 +410,7 @@ function GearInfo() {
                 checked={speedUnit === "миль/ч"}
                 onChange={() => handleUnitChange("speed", "миль/ч")}
               />
-              <label htmlFor="Miles_Houres">
-                миль/ч
-              </label>
+              <label htmlFor="Miles_Houres">миль/ч</label>
             </div>
           </div>
         </div>

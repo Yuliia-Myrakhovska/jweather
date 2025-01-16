@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getCurrentWeather, getCoordinates } from '../../../proxy/weatherProxy';
-
+import { getCurrentWeather, getCoordinates } from "../../../proxy/weatherProxy";
 
 function CityInfo({ onCityLoaded }) {
   const [currentDate, setCurrentDate] = useState("");
@@ -9,9 +8,9 @@ function CityInfo({ onCityLoaded }) {
   const [selectedCities, setSelectedCities] = useState([]);
   const [starClicked, setStarClicked] = useState(false);
   const [cityName, setCityName] = useState("");
-  const [isLoading, setIsLoading] = useState(true); 
-  
-  const settings = JSON.parse(localStorage.getItem('settings')) || {};
+  const [isLoading, setIsLoading] = useState(true);
+
+  const settings = JSON.parse(localStorage.getItem("settings")) || {};
   const temperatureUnit = settings.temperatureUnit;
   const language = settings.language;
 
@@ -26,42 +25,47 @@ function CityInfo({ onCityLoaded }) {
   }, [language]);
 
   useEffect(() => {
-    const cities = JSON.parse(localStorage.getItem('selectedCities')) || [];
+    const cities = JSON.parse(localStorage.getItem("selectedCities")) || [];
     setSelectedCities(cities);
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true); 
+      setIsLoading(true);
 
       try {
         const weatherData = getCurrentWeather();
         if (weatherData) {
           setWeatherInfo(weatherData);
         }
-        
+
         const coordinatesData = getCoordinates();
         if (coordinatesData) {
           setCityCoordinates(coordinatesData);
         }
-        
+
         if (cityCoordinates.latitude && cityCoordinates.longitude) {
-          const isCitySelected = selectedCities.some(city =>
-            city.latitude === cityCoordinates.latitude && city.longitude === cityCoordinates.longitude
+          const isCitySelected = selectedCities.some(
+            (city) =>
+              city.latitude === cityCoordinates.latitude &&
+              city.longitude === cityCoordinates.longitude
           );
           setStarClicked(isCitySelected);
 
-          const cityName = await getCityNameByCoordinates(cityCoordinates.latitude, cityCoordinates.longitude);
-          
+          const cityName = await getCityNameByCoordinates(
+            cityCoordinates.latitude,
+            cityCoordinates.longitude
+          );
+
           setTimeout(() => {
             onCityLoaded(true);
           }, 1);
           setCityName(cityName);
         }
       } catch (error) {
-        console.error('Error fetching city data:', error);
+        console.error("Error fetching city data:", error);
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     };
 
@@ -71,31 +75,38 @@ function CityInfo({ onCityLoaded }) {
   const handleStarClick = () => {
     const cityData = {
       latitude: cityCoordinates.latitude,
-      longitude: cityCoordinates.longitude
+      longitude: cityCoordinates.longitude,
     };
 
-    const storedCities = JSON.parse(localStorage.getItem('selectedCities')) || [];
+    const storedCities =
+      JSON.parse(localStorage.getItem("selectedCities")) || [];
 
-    const cityIndex = storedCities.findIndex(city =>
-      city.latitude === cityData.latitude && city.longitude === cityData.longitude
+    const cityIndex = storedCities.findIndex(
+      (city) =>
+        city.latitude === cityData.latitude &&
+        city.longitude === cityData.longitude
     );
 
     if (cityIndex === -1) {
       const updatedCities = [...storedCities, cityData];
-      localStorage.setItem('selectedCities', JSON.stringify(updatedCities));
+      localStorage.setItem("selectedCities", JSON.stringify(updatedCities));
       setStarClicked(true);
     } else {
-      const updatedCities = storedCities.filter((_, index) => index !== cityIndex);
-      localStorage.setItem('selectedCities', JSON.stringify(updatedCities));
+      const updatedCities = storedCities.filter(
+        (_, index) => index !== cityIndex
+      );
+      localStorage.setItem("selectedCities", JSON.stringify(updatedCities));
       setStarClicked(false);
     }
   };
 
   const getCityNameByCoordinates = async (lat, lon) => {
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${language}&addressdetails=1`);
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${language}&addressdetails=1`
+      );
       if (!response.ok) {
-        throw new Error('Error fetching data');
+        throw new Error("Error fetching data");
       }
       const data = await response.json();
       const city = data.address.city;
@@ -119,11 +130,11 @@ function CityInfo({ onCityLoaded }) {
       }
 
       cityName += `${country}`;
-      cityName = cityName.replace(/,\s*$/, '');
+      cityName = cityName.replace(/,\s*$/, "");
 
       return cityName;
     } catch (error) {
-      console.error('Error fetching city name by coordinates:', error);
+      console.error("Error fetching city name by coordinates:", error);
       return null;
     }
   };
@@ -142,7 +153,7 @@ function CityInfo({ onCityLoaded }) {
                 className="weather-info-icon bi bi-star-fill"
                 viewBox="0 0 16 16"
               >
-                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
               </svg>
             ) : (
               <svg
@@ -159,7 +170,10 @@ function CityInfo({ onCityLoaded }) {
           </div>
           <div className="weather-icon-temp">
             <div className="weather-info-deck">
-              <div className="weather-temp">{weatherInfo.temp}{temperatureUnit}</div>
+              <div className="weather-temp">
+                {weatherInfo.temp}
+                {temperatureUnit}
+              </div>
             </div>
             <img
               className="weather-icon"

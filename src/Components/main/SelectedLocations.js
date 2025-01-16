@@ -76,7 +76,7 @@ function SelectedLocations({ onRefreshWeather }) {
   };
 
   const handleItemClick = async (lat, lon) => {
-    navigate("/");
+    navigate("/jweather");
     await getCoordinatesByCity(lat, lon);
     onRefreshWeather();
   };
